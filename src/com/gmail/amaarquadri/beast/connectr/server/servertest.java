@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+//https://stackoverflow.com/questions/134492/how-to-serialize-an-object-into-a-string
 class servertest extends JPanel implements ActionListener {
 
     static BufferedReader in;
