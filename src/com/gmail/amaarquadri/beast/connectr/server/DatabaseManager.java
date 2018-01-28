@@ -19,7 +19,7 @@ public class DatabaseManager {
         new Thread(() -> {
             if (stop) return;
             try {
-                Thread.sleep(300000);
+                Thread.sleep(120000);
             } catch (InterruptedException ignore) {}
 
             synchronized (ServerRequestHandler.users) {
@@ -37,6 +37,7 @@ public class DatabaseManager {
     }
 
     public static void writeToFile(ArrayList<User> users) throws IOException {
+        System.out.println("Writing");
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("database.ser"))) {
             outputStream.writeObject(users);
         }
