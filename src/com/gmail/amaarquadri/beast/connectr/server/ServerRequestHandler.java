@@ -2,7 +2,6 @@ package com.gmail.amaarquadri.beast.connectr.server;
 
 import com.gmail.amaarquadri.beast.connectr.server.logic.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -11,25 +10,15 @@ import java.util.Random;
  * Created by amaar on 2018-01-27.
  */
 public class ServerRequestHandler {
-    public static final ArrayList<User> users;
+    public static final ArrayList<User> users = new ArrayList<>();
     private static Random random = new Random();
-
-    //TODO: confirm this runs before main (though it shouldn't matter)
-    static {
-        ArrayList<User> temp;
-        try {
-            temp = DatabaseManager.readFromFile();
-        } catch (IOException | ClassNotFoundException ignore) {
-            temp = new ArrayList<>();
-        }
-        users = temp;
-    }
 
     public static ServerResponse handle(ServerRequest serverRequest) {
         String username;
         String password;
         String newFriendUsername;
         User user;
+        User friend
         synchronized (users) {
             switch (serverRequest.getType()) {
                 case CREATE_ACCOUNT:
@@ -71,6 +60,8 @@ public class ServerRequestHandler {
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
                     return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
+
+
 
 
 
