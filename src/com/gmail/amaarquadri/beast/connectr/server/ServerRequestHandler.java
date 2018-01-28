@@ -33,7 +33,7 @@ public class ServerRequestHandler {
         Friend userFriend;
         User friend;
         Friend myFriend;
-        User friendExist;
+        Friend friendExist;
         boolean isInDatabase;
         synchronized (users) {
             switch (serverRequest.getType()) {
@@ -86,7 +86,7 @@ public class ServerRequestHandler {
                         if(eachFriend.getUsername().equals(friend.getUsername()))
                         {
                             isInDatabase = true;
-                            friendExist = eachFriend;
+                            friendExist = new Friend(eachFriend);
                             break;
                         }
                     }
@@ -94,10 +94,9 @@ public class ServerRequestHandler {
                     {
                         return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_FAILED);
                     }
-                    myFriend = new Friend(friendExist);
                     userFriend = new Friend(user);
-                    myFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
-                    myFriend.setFriendHasPermission(true);
+                    friendExist.setIHavePermission(true); // TODO: this needs to CHANGE!!
+                    friendExist.setFriendHasPermission(true);
                     userFriend.setFriendHasPermission(true);
                     userFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
                     return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_SUCCESS);
@@ -111,7 +110,7 @@ public class ServerRequestHandler {
                         if(eachFriend.getUsername().equals(friend.getUsername()))
                         {
                             isInDatabase = true;
-                            friendExist = eachFriend;
+                            friendExist = new Friend(eachFriend);
                             break;
                         }
                     }
@@ -119,15 +118,13 @@ public class ServerRequestHandler {
                     {
                         return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_FAILED);
                     }
-                    myFriend = new Friend(friendExist);
                     userFriend = new Friend(user);
-                    myFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
-                    myFriend.setFriendHasPermission(false);
+                    friendExist.setIHavePermission(false); // TODO: this needs to CHANGE!!
+                    friendExist.setFriendHasPermission(false);
                     userFriend.setFriendHasPermission(false);
                     userFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
                     return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_SUCCESS);
                 case GET_LOCATION:
-                    user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
                     isInDatabase = false;
                     friendExist = null;
@@ -136,16 +133,20 @@ public class ServerRequestHandler {
                         if(eachFriend.getUsername().equals(friend.getUsername()))
                         {
                             isInDatabase = true;
-                            friendExist = eachFriend;
+                            friendExist = new Friend(eachFriend);
                             break;
                         }
                     }
-                    if (!isInDatabase)
-                    {
+                    if (!isInDatabase) {
                         return new ServerResponse(ServerResponse.Type.GET_LOCATION_FAILED);
                     }
+                    if(!friendExist.iHavePermission())
+                        return new ServerResponse((ServerResponse.Type.GET_LOCATION_FAILED));
                     return ServerResponse.createGetLocationServerResponseSuccess(friendExist.getLastLocationData());
-                    
+                case UPDATE_LOCATION:
+                    user = serverRequest.getUser();
+                    user.setLastLocationData(serverRequest.getLocationData());
+                    return new ServerResponse(ServerResponse.Type.UPDATE_LOCATION_SUCCESS);
 
                 default:
                     throw new UnsupportedOperationException();
