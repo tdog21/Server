@@ -23,7 +23,9 @@ public class Server {
         setupServer();
         try {
             out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
+            System.out.println("server responded");
             server.close();
+            System.out.println("server closed");
             startServer();
         } catch (IOException e) {
             throw new IOException("Read Failed", e);
@@ -40,6 +42,7 @@ public class Server {
     private static void setupServer() throws IOException {
         try {
             server = new ServerSocket(4321);
+            System.out.println("serverSocket active");
         } catch (IOException e) {
             throw new IOException("Could not listen on port 4321", e);
         }
@@ -47,6 +50,7 @@ public class Server {
         Socket client;
         try {
             client = server.accept();
+            System.out.println("looking for requests");
         } catch (IOException e) {
             throw new IOException("Accept failed: 4321", e);
         }
@@ -54,6 +58,7 @@ public class Server {
         try {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
+            System.out.println("I/O initialized ");
         } catch (IOException e) {
             throw new IOException("Read failed", e);
         }
