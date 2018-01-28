@@ -51,6 +51,14 @@ public class ServerRequest implements Serializable {
             password = null;
             newFriendUsername = null;
         }
+        else if (type == Type.DISABLE_PERMISSION) {
+            this.type = Type.DISABLE_PERMISSION;
+            this.user = user;
+            this. friend = friend;
+            username = null;
+            password = null;
+            newFriendUsername = null;
+        }
         else throw new UnsupportedOperationException();
     }
 
