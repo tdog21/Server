@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * Created by amaar on 2018-01-27.
  */
-
 public class ServerResponse implements Serializable {
     public static final ServerResponse SUCCESS = new ServerResponse(Type.SUCCESS, null, null, null);
     public static final ServerResponse FAILED = new ServerResponse(Type.FAILED, null, null, null);

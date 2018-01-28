@@ -9,15 +9,6 @@ public class Friend extends User {
     private boolean iAmPendingPermission;
     private boolean friendIsPendingPermission;
 
-    public Friend(int index, int id, String username, String password, LocationData lastLocation,
-                  boolean iHavePermission, boolean friendHasPermission, boolean iAmPendingPermission, boolean friendIsPendingPermission) {
-        super(index, id, username, password, lastLocation, null);
-        this.iHavePermission = iHavePermission;
-        this.friendHasPermission = friendHasPermission;
-        this.iAmPendingPermission = iAmPendingPermission;
-        this.friendIsPendingPermission = friendIsPendingPermission;
-    }
-
     public Friend(User user) {
         super(user.getIndex(), user.getId(), user.getUsername(), user.getPassword(), user.getLastLocationData(), user.getFriends());
         iHavePermission = false;

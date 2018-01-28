@@ -6,7 +6,6 @@ import java.util.ArrayList;
 /**
  * Created by amaar on 2018-01-27.
  */
-
 public class User implements Serializable {
     private static final long serialVersionUID = 1;
 
