@@ -33,7 +33,6 @@ public class Friend extends User {
         this.friendHasPermission = friendHasPermission;
     }
 
-
     public boolean iAmPendingPermission() {
         return iAmPendingPermission;
     }
