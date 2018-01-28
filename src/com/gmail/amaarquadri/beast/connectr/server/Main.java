@@ -20,7 +20,7 @@ public class Main {
                 try {
                     DatabaseManager.writeToFile(ServerRequestHandler.users);
                 } catch (IOException e1) {
-                    System.out.println(e1);
+                    e1.printStackTrace();
                 }
             }
         });
