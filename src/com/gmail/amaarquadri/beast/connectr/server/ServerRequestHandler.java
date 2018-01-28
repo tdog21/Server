@@ -2,6 +2,7 @@ package com.gmail.amaarquadri.beast.connectr.server;
 
 import com.gmail.amaarquadri.beast.connectr.server.logic.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
@@ -10,8 +11,19 @@ import java.util.Random;
  * Created by amaar on 2018-01-27.
  */
 public class ServerRequestHandler {
-    public static final ArrayList<User> users = new ArrayList<>();
+    public static final ArrayList<User> users;
     private static Random random = new Random();
+
+    //TODO: confirm this runs before main (though it shouldn't matter)
+    static {
+        ArrayList<User> temp;
+        try {
+            temp = DatabaseManager.readFromFile();
+        } catch (IOException | ClassNotFoundException ignore) {
+            temp = new ArrayList<>();
+        }
+        users = temp;
+    }
 
     public static ServerResponse handle(ServerRequest serverRequest) {
         String username;
