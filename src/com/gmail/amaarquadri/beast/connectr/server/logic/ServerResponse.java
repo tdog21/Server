@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 public class ServerResponse implements Serializable {
     public enum Type {
-        LOGIN_RESULT, LOGIN_FAILED, ADD_FRIEND_SUCCESS, ADD_FRIEND_FAILED, ENABLE_PERMISSION_FAILED, ENABLE_PERMISSION_SUCCESS
+        LOGIN_RESULT, LOGIN_FAILED, ADD_FRIEND_SUCCESS, ADD_FRIEND_FAILED, ENABLE_PERMISSION_FAILED, ENABLE_PERMISSION_SUCCESS,
+            DISABLE_PERMISSION_FAILED, DISABLE_PERMISSION_SUCCESS
     }
 
     private final Type type;
@@ -37,10 +38,6 @@ public class ServerResponse implements Serializable {
         return new ServerResponse(Type.ADD_FRIEND_SUCCESS, null, newFriend);
     }
 
-    public static ServerResponse createEnablePermissionServerResponseSuccess(User user, Friend friend)
-    {
-        return new ServerResponse(Type.ENABLE_PERMISSION_SUCCESS, user, friend);
-    }
 
     public Type getType() {
         return type;
