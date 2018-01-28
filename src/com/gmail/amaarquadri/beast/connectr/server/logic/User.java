@@ -14,7 +14,7 @@ public class User implements Serializable {
     private final int id;
     private final String username;
     private final String password;
-    private final LocationData lastLocationData;
+    private LocationData lastLocationData;
     private final ArrayList<Friend> friends;
 
     public User(int index, int id, String username, String password, LocationData lastLocation,
@@ -49,5 +49,10 @@ public class User implements Serializable {
 
     public ArrayList<Friend> getFriends() {
         return friends;
+    }
+
+    public void setLastLocationData(LocationData lastLocationData)
+    {
+        this.lastLocationData = lastLocationData;
     }
 }
