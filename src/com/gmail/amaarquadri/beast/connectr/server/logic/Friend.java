@@ -14,6 +14,12 @@ public class Friend extends User {
         this.friendHasPermission = friendHasPermission;
     }
 
+    public Friend(User user) {
+        super(user.getIndex(), user.getId(), user.getUsername(), user.getPassword(), user.getLastLocationData(), user.getFriends());
+        iHavePermission = false;
+        friendHasPermission = false;
+    }
+
     public boolean iHavePermission() {
         return iHavePermission;
     }

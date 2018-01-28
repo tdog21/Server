@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class ServerRequest implements Serializable {
     public enum Type {
-        CREATE_ACCOUNT, LOGIN, ADD_FRIEND;
+        CREATE_ACCOUNT, LOGIN, ADD_FRIEND, ENABLE_PERMISSION;
     }
 
     private final Type type;

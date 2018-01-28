@@ -1,9 +1,6 @@
 package com.gmail.amaarquadri.beast.connectr.server;
 
-import com.gmail.amaarquadri.beast.connectr.server.logic.LocationData;
-import com.gmail.amaarquadri.beast.connectr.server.logic.ServerRequest;
-import com.gmail.amaarquadri.beast.connectr.server.logic.ServerResponse;
-import com.gmail.amaarquadri.beast.connectr.server.logic.User;
+import com.gmail.amaarquadri.beast.connectr.server.logic.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -43,6 +40,27 @@ public class ServerRequestHandler {
                 case ADD_FRIEND:
                     user = serverRequest.getUser();
                     newFriendUsername = serverRequest.getNewFriendUsername();
+                    boolean isInDatabase = false;
+                    User newFriend = null;
+                    for(User friend : users)
+                    {
+                        if(friend.getUsername().equals(newFriendUsername))
+                        {
+                            isInDatabase = true;
+                            newFriend = friend;
+                            break;
+                        }
+                    }
+                    if (!isInDatabase)
+                    {
+                        return new ServerResponse(ServerResponse.Type.ADD_FRIEND_FAILED);
+                    }
+                    Friend myFriend = new Friend(newFriend);
+                    user.getFriends().add(myFriend);
+                    newFriend.getFriends().add(new Friend(user));
+                    return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
+
+
 
                 default:
                     throw new UnsupportedOperationException();
