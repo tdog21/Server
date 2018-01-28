@@ -26,6 +26,8 @@ public class Main {
         });
         frame.setVisible(true);
         DatabaseManager.startDatabaseWriter();
+        System.out.println("Database initialized");
         Server.startServer();
+        System.out.println("Server Initalized");
     }
 }

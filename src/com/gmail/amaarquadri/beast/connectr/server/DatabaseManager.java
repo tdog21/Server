@@ -17,9 +17,10 @@ public class DatabaseManager {
 
     public static void startDatabaseWriter() {
         new Thread(() -> {
+            System.out.println("datbaseWriter start");
             if (stop) return;
             try {
-                Thread.sleep(120000);
+                Thread.sleep(120000); //sleeps 2 minutes
             } catch (InterruptedException ignore) {}
 
             synchronized (ServerRequestHandler.users) {

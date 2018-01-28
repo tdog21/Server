@@ -58,7 +58,7 @@ public class Server {
         try {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
-            System.out.println("I/O initialized ");
+            System.out.println("I/O initialized");
         } catch (IOException e) {
             throw new IOException("Read failed", e);
         }

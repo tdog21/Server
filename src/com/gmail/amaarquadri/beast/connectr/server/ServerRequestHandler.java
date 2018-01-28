@@ -35,6 +35,7 @@ public class ServerRequestHandler {
         Friend myFriend;
         Friend friendExist;
         boolean isInDatabase;
+        /*------------------------------------------------------------------------------------------------------------*/
         synchronized (users) {
             switch (serverRequest.getType()) {
                 case CREATE_ACCOUNT:
@@ -45,6 +46,7 @@ public class ServerRequestHandler {
                     user = new User(users.size(), getRandomId(), username, password, new LocationData(), new ArrayList<>());
                     users.add(user);
                     return ServerResponse.createLoginResultServerResponse(user);
+                /*----------------------------------------------------------------------------------------------------*/
                 case LOGIN:
                     username = serverRequest.getUsername();
                     password = serverRequest.getPassword();
@@ -53,6 +55,7 @@ public class ServerRequestHandler {
                     user = optional.get();
                     if (!user.getPassword().equals(password)) return ServerResponse.FAILED;
                     return ServerResponse.createLoginResultServerResponse(user);
+                /*----------------------------------------------------------------------------------------------------*/
                 case ADD_FRIEND:
                     user = serverRequest.getUser();
                     newFriendUsername = serverRequest.getNewFriendUsername();
@@ -72,6 +75,7 @@ public class ServerRequestHandler {
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
                     return ServerResponse.createAddFriendResultServerResponse(myFriend);
+                /*----------------------------------------------------------------------------------------------------*/
                 case ENABLE_PERMISSION:
                     user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
@@ -93,6 +97,7 @@ public class ServerRequestHandler {
                     userFriend.setFriendHasPermission(true);
                     userFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
                     return ServerResponse.SUCCESS;
+                /*----------------------------------------------------------------------------------------------------*/
                 case DISABLE_PERMISSION:
                     user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
@@ -114,6 +119,7 @@ public class ServerRequestHandler {
                     userFriend.setFriendHasPermission(false);
                     userFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
                     return ServerResponse.SUCCESS;
+                /*----------------------------------------------------------------------------------------------------*/
                 case GET_LOCATION:
                     friend = serverRequest.getFriend();
                     isInDatabase = false;
@@ -128,6 +134,7 @@ public class ServerRequestHandler {
                     if (!isInDatabase) return ServerResponse.FAILED;
                     if(!friendExist.iHavePermission()) return ServerResponse.FAILED;
                     return ServerResponse.createGetLocationResultServerResponse(friendExist.getLastLocationData());
+                /*----------------------------------------------------------------------------------------------------*/
                 case UPDATE_LOCATION:
                     user = serverRequest.getUser();
                     user.setLastLocationData(serverRequest.getLocationData());
