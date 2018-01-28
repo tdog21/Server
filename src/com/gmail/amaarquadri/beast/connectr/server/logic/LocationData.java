@@ -10,7 +10,12 @@ public class LocationData implements Serializable {
 
     private final double latitude;
     private final double longitude;
+    //if lastUpdateUnixTime is 0, then no LocationData is available
     private final long lastUpdateUnixTime;
+
+    public LocationData() {
+        this(0, 0, 0);
+    }
 
     public LocationData(double latitude, double longitude, long lastUpdateUnixTime) {
         this.latitude = latitude;

@@ -8,35 +8,65 @@ import java.io.Serializable;
 
 public class ServerRequest implements Serializable {
     public enum Type {
-        LOGIN, ADD_FRIEND;
+        CREATE_ACCOUNT, LOGIN, ADD_FRIEND;
     }
 
     private final Type type;
+    private final User user;
     private final String username;
     private final String password;
     private final String newFriendUsername;
 
-    private ServerRequest(Type type, String s1, String s2) {
-        if (type == Type.LOGIN) {
+    private ServerRequest(Type type, User user, String s1, String s2) {
+        if (type == Type.CREATE_ACCOUNT) {
+            this.type = Type.CREATE_ACCOUNT;
+            this.user = null;
+            username = s1;
+            password = s2;
+            newFriendUsername = null;
+        }
+        else if (type == Type.LOGIN) {
             this.type = Type.LOGIN;
+            this.user = null;
             username = s1;
             password = s2;
             newFriendUsername = null;
         }
         else if (type == Type.ADD_FRIEND) {
             this.type = Type.ADD_FRIEND;
-            username = s1;
+            this.user = user;
+            username = null;
             password = null;
-            newFriendUsername = s2;
+            newFriendUsername = s1;
         }
         else throw new UnsupportedOperationException();
     }
 
     public static ServerRequest createLoginServerRequest(String username, String password) {
-        return new ServerRequest(Type.LOGIN, username, password);
+        return new ServerRequest(Type.LOGIN, null, username, password);
     }
 
-    public static ServerRequest createAddFriendServerRequest(String username, String newFriendUsername) {
-        return new ServerRequest(Type.ADD_FRIEND, username, newFriendUsername);
+    public static ServerRequest createAddFriendServerRequest(User user, String newFriendUsername) {
+        return new ServerRequest(Type.ADD_FRIEND, user, newFriendUsername, null);
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNewFriendUsername() {
+        return newFriendUsername;
     }
 }
