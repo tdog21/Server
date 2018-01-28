@@ -13,7 +13,7 @@ public class DatabaseManager {
         throw new InternalError("Cannot instantiate DatabaseManager");
     }
 
-    public void startDatabaseWriter() {
+    public static void startDatabaseWriter() {
         new Thread(() -> {
             try {
                 Thread.sleep(300000);
