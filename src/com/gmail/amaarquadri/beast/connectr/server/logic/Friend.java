@@ -3,17 +3,22 @@ package com.gmail.amaarquadri.beast.connectr.server.logic;
 /**
  * Created by amandamorin on 2018-01-27.
  */
-
 public class Friend extends User {
-    private final boolean hasPermission;
+    private final boolean iHavePermission;
+    private final boolean friendHasPermission;
 
     public Friend(int index, int id, String username, String password, LocationData lastLocation,
-                  boolean hasPermission) {
+                  boolean iHavePermission, boolean friendHasPermission) {
         super(index, id, username, password, lastLocation, null);
-        this.hasPermission = hasPermission;
+        this.iHavePermission = iHavePermission;
+        this.friendHasPermission = friendHasPermission;
     }
 
-    public boolean hasPermission() {
-        return hasPermission;
+    public boolean iHavePermission() {
+        return iHavePermission;
+    }
+
+    public boolean friendHasPermission() {
+        return friendHasPermission;
     }
 }
