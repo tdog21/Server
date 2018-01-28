@@ -1,7 +1,7 @@
-package com.gmail.amaarquadri.beast.connectr;
+package com.gmail.amaarquadri.beast.connectr.logic;
 
-import com.gmail.amaarquadri.beast.connectr.logic.ServerRequest;
-import com.gmail.amaarquadri.beast.connectr.logic.ServerResponse;
+import com.gmail.amaarquadri.beast.connectr.serverlogic.ServerRequest;
+import com.gmail.amaarquadri.beast.connectr.serverlogic.ServerResponse;
 
 import java.io.*;
 import java.net.ServerSocket;

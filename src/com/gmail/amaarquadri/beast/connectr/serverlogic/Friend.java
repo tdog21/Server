@@ -1,4 +1,4 @@
-package com.gmail.amaarquadri.beast.connectr.logic;
+package com.gmail.amaarquadri.beast.connectr.serverlogic;
 
 /**
  * Created by amandamorin on 2018-01-27.

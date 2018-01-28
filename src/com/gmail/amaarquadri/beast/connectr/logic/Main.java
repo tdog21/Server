@@ -1,4 +1,4 @@
-package com.gmail.amaarquadri.beast.connectr;
+package com.gmail.amaarquadri.beast.connectr.logic;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
