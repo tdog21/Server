@@ -126,6 +126,25 @@ public class ServerRequestHandler {
                     userFriend.setFriendHasPermission(false);
                     userFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
                     return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_SUCCESS);
+                case GET_LOCATION:
+                    user = serverRequest.getUser();
+                    friend = serverRequest.getFriend();
+                    isInDatabase = false;
+                    friendExist = null;
+                    for(User eachFriend : users)
+                    {
+                        if(eachFriend.getUsername().equals(friend.getUsername()))
+                        {
+                            isInDatabase = true;
+                            friendExist = eachFriend;
+                            break;
+                        }
+                    }
+                    if (!isInDatabase)
+                    {
+                        return new ServerResponse(ServerResponse.Type.GET_LOCATION_FAILED);
+                    }
+
 
                 default:
                     throw new UnsupportedOperationException();
