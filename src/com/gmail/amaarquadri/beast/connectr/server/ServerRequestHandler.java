@@ -55,12 +55,12 @@ public class ServerRequestHandler {
                     newFriendUsername = serverRequest.getNewFriendUsername();
                     boolean isInDatabase = false;
                     User newFriend = null;
-                    for(User friend : users)
+                    for(User eachFriend : users)
                     {
-                        if(friend.getUsername().equals(newFriendUsername))
+                        if(eachFriend.getUsername().equals(newFriendUsername))
                         {
                             isInDatabase = true;
-                            newFriend = friend;
+                            newFriend = eachFriend;
                             break;
                         }
                     }
@@ -72,6 +72,27 @@ public class ServerRequestHandler {
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
                     return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
+                case ENABLE_PERMISSION:
+                    user = serverRequest.getUser();
+                    friend = serverRequest.getFriend();
+                    boolean isInDatabase2 = false;
+                    User friendExist = null;
+                    for(User eachFriend : users)
+                    {
+                        if(eachFriend.getUsername().equals(friend))
+                        {
+                            isInDatabase2 = true;
+                            friendExist = eachFriend;
+                            break;
+                        }
+                    }
+                    if (!isInDatabase2)
+                    {
+                        return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_FAILED);
+                    }
+                    Friend myFriend2 = new Friend(friendExist);
+                    Friend userFriend = new Friend(user);
+
 
                 default:
                     throw new UnsupportedOperationException();
