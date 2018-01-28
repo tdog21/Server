@@ -1,4 +1,4 @@
-package com.gmail.amaarquadri.beast.connectr.server.logic;
+package com.gmail.amaarquadri.beast.connectr.logic;
 
 import java.io.Serializable;
 

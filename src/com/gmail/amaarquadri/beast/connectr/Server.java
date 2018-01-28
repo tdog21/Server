@@ -1,7 +1,7 @@
-package com.gmail.amaarquadri.beast.connectr.server;
+package com.gmail.amaarquadri.beast.connectr;
 
-import com.gmail.amaarquadri.beast.connectr.server.logic.ServerRequest;
-import com.gmail.amaarquadri.beast.connectr.server.logic.ServerResponse;
+import com.gmail.amaarquadri.beast.connectr.logic.ServerRequest;
+import com.gmail.amaarquadri.beast.connectr.logic.ServerResponse;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -13,20 +13,22 @@ public class Server {
     }
 
     private static boolean stop = false;
-    private static BufferedReader in;
-    private static PrintWriter out;
+    private static ObjectInputStream in;
+    private static ObjectOutputStream out;
     private static ServerSocket server;
 
     public static void startServer() throws IOException, ClassNotFoundException {
         if (stop) return;
         setupServer();
         try {
-            out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
+            out.writeObject(ServerRequestHandler.handle((ServerRequest) in.readObject()));
+            //out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
             System.out.println("server responded");
             server.close();
             System.out.println("server closed");
             startServer();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new IOException("Read Failed", e);
         }
         catch (ClassNotFoundException e) {
@@ -55,8 +57,8 @@ public class Server {
         }
 
         try {
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            out = new PrintWriter(client.getOutputStream(), true);
+            in = new ObjectInputStream(client.getInputStream());
+            out = new ObjectOutputStream(client.getOutputStream());
             System.out.println("I/O initialized");
         } catch (IOException e) {
             throw new IOException("Read failed", e);

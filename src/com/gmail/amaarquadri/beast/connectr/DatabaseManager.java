@@ -1,6 +1,6 @@
-package com.gmail.amaarquadri.beast.connectr.server;
+package com.gmail.amaarquadri.beast.connectr;
 
-import com.gmail.amaarquadri.beast.connectr.server.logic.User;
+import com.gmail.amaarquadri.beast.connectr.logic.User;
 
 import java.io.*;
 import java.util.ArrayList;
