@@ -21,12 +21,14 @@ public class Server {
     public static void startServer() throws IOException, ClassNotFoundException {
         if (stop) return;
         setupServer();
+        String inputLine;
+        while(( inputLine = in.readLine()) != null && !stop){
         try {
             out.writeObject(ServerRequestHandler.handle((ServerRequest) in.readObject()));
             System.out.println("server responded");
-            server.close();
-            System.out.println("server closed");
-            startServer();
+            //server.close();
+            //System.out.println("server closed");
+            //startServer();
         } catch (IOException e) {
             e.printStackTrace();
             throw new IOException("Read Failed", e);
@@ -34,7 +36,7 @@ public class Server {
         catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("Read Failed", e);
         }
-    }
+        }}
 
     public static void stop() {
         stop = true;
