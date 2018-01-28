@@ -17,6 +17,7 @@ public class ServerRequestHandler {
     public static final ArrayList<User> users;
     private static Random random = new Random();
 
+    //TODO: confirm this runs before main (though it shouldn't matter)
     static {
         ArrayList<User> temp;
         try {
