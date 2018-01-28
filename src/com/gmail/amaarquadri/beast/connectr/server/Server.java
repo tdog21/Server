@@ -1,26 +1,29 @@
 package com.gmail.amaarquadri.beast.connectr.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import com.gmail.amaarquadri.beast.connectr.server.logic.ServerRequest;
+import com.gmail.amaarquadri.beast.connectr.server.logic.ServerResponse;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Base64;
 
 public class Server {
     private static BufferedReader in;
     private static PrintWriter out;
     private static ServerSocket server;
 
-    public static void startServer() throws IOException {
+    public static void startServer() throws IOException, ClassNotFoundException {
         setupServer();
         try {
-            String line = in.readLine();
-            out.println(line);
+            out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
             server.close();
             startServer();
         } catch (IOException e) {
             throw new IOException("Read Failed", e);
+        }
+        catch (ClassNotFoundException e) {
+            throw new ClassNotFoundException("Read Failed", e);
         }
     }
 
@@ -44,5 +47,20 @@ public class Server {
         } catch (IOException e) {
             throw new IOException("Read failed", e);
         }
+    }
+
+    private static ServerRequest deserializeServerRequest(String serverRequest) throws IOException, ClassNotFoundException {
+        ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(serverRequest)));
+        ServerRequest request  = (ServerRequest) inputStream.readObject();
+        inputStream.close();
+        return request;
+    }
+
+    private static String serializeServerResponse(ServerResponse serverResponse) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(serverResponse);
+        objectOutputStream.close();
+        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
     }
 }
