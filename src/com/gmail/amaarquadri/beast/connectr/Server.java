@@ -23,7 +23,6 @@ public class Server {
         setupServer();
         try {
             out.writeObject(ServerRequestHandler.handle((ServerRequest) in.readObject()));
-            //out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
             System.out.println("server responded");
             server.close();
             System.out.println("server closed");

@@ -38,7 +38,7 @@ public class Friend extends User {
         return iAmPendingPermission;
     }
 
-    public boolean friendIsPendingPermsission() {
+    public boolean friendIsPendingPermission() {
         return friendIsPendingPermission;
     }
 }
