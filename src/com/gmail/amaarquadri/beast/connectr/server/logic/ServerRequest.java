@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * Created by amaar on 2018-01-27.
  */
-
 public class ServerRequest implements Serializable {
     public enum Type {
         CREATE_ACCOUNT, LOGIN, ADD_FRIEND, ENABLE_PERMISSION, DISABLE_PERMISSION, UPDATE_LOCATION, GET_LOCATION;
@@ -19,93 +18,42 @@ public class ServerRequest implements Serializable {
     private final String newFriendUsername;
     private final LocationData locationData;
 
-    private ServerRequest(Type type, User user, Friend friend, String s1, String s2, LocationData location) {
-        if (type == Type.CREATE_ACCOUNT) {
-            this.type = Type.CREATE_ACCOUNT;
-            this.user = null;
-            this.friend = null;
-            username = s1;
-            password = s2;
-            newFriendUsername = null;
-            locationData = null;
-        }
-        else if (type == Type.LOGIN) {
-            this.type = Type.LOGIN;
-            this.user = null;
-            this.friend = null;
-            username = s1;
-            password = s2;
-            newFriendUsername = null;
-            locationData = null;
-        }
-        else if (type == Type.ADD_FRIEND) {
-            this.type = Type.ADD_FRIEND;
-            this.user = user;
-            this.friend = null;
-            username = null;
-            password = null;
-            newFriendUsername = s1;
-            locationData = null;
-        }
-        else if (type == Type.ENABLE_PERMISSION) {
-            this.type = Type.ENABLE_PERMISSION;
-            this.user = user;
-            this. friend = friend;
-            username = null;
-            password = null;
-            newFriendUsername = null;
-            locationData = null;
-        }
-        else if (type == Type.DISABLE_PERMISSION) {
-            this.type = Type.DISABLE_PERMISSION;
-            this.user = user;
-            this. friend = friend;
-            username = null;
-            password = null;
-            newFriendUsername = null;
-            locationData = null;
-        }
-        else if (type == Type.GET_LOCATION)
-        {
-            this.type = Type.GET_LOCATION;
-            this.user = user;
-            this.friend = friend;
-            username = null;
-            password = null;
-            newFriendUsername = null;
-            locationData = location;
-        }
-        else if (type == Type.UPDATE_LOCATION)
-        {
-            this.type = Type.UPDATE_LOCATION;
-            this.user = user;
-            this.friend = friend;
-            username = null;
-            password = null;
-            newFriendUsername = null;
-            locationData = location;
-        }
-        else throw new UnsupportedOperationException();
+    private ServerRequest(Type type, User user, Friend friend, String username, String password, String newFriendUsername, LocationData locationData) {
+        this.type = type;
+        this.user = user;
+        this.friend = friend;
+        this.username = username;
+        this.password = password;
+        this.newFriendUsername = newFriendUsername;
+        this.locationData = locationData;
     }
 
     public static ServerRequest createCreateAccountServerRequest(String username, String password) {
-        return new ServerRequest(Type.CREATE_ACCOUNT, null, null, username, password, null);
+        return new ServerRequest(Type.CREATE_ACCOUNT, null, null, username, password, null, null);
     }
 
     public static ServerRequest createLoginServerRequest(String username, String password) {
-        return new ServerRequest(Type.LOGIN, null, null, username, password, null);
+        return new ServerRequest(Type.LOGIN, null, null, username, password, null, null);
     }
 
     public static ServerRequest createAddFriendServerRequest(User user, String newFriendUsername) {
-        return new ServerRequest(Type.ADD_FRIEND, user, null, newFriendUsername, null, null);
+        return new ServerRequest(Type.ADD_FRIEND, user, null, null, null, newFriendUsername, null);
     }
 
     public static ServerRequest createEnablePermissionServerRequest(User user, Friend friend) {
-        return new ServerRequest(Type.ENABLE_PERMISSION, user, friend, null, null, null);
+        return new ServerRequest(Type.ENABLE_PERMISSION, user, friend, null, null, null, null);
     }
 
     public static ServerRequest createDisablePermissionServerRequest(User user, Friend friend) {
-        return new ServerRequest(Type.DISABLE_PERMISSION, user, friend, null, null, null);
+        return new ServerRequest(Type.DISABLE_PERMISSION, user, friend, null, null, null, null);
+    }
+
+    public static ServerRequest createUpdateLocationServerRequest(User user, LocationData locationData) {
+        return new ServerRequest(Type.UPDATE_LOCATION, user, null, null, null, null, locationData);
+    }
+
+    public static ServerRequest createGetLocationServerRequest(User user, Friend friend) {
+        return new ServerRequest(Type.GET_LOCATION, user, friend, null, null, null, null);
     }
 
     public Type getType() {
@@ -116,16 +64,12 @@ public class ServerRequest implements Serializable {
         return user;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public Friend getFriend() {
         return friend;
     }
 
-    public LocationData getLocationData() {
-        return locationData;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -134,5 +78,9 @@ public class ServerRequest implements Serializable {
 
     public String getNewFriendUsername() {
         return newFriendUsername;
+    }
+
+    public LocationData getLocationData() {
+        return locationData;
     }
 }

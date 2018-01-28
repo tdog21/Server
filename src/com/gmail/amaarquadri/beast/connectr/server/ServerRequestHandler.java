@@ -41,19 +41,18 @@ public class ServerRequestHandler {
                     username = serverRequest.getUsername();
                     password = serverRequest.getPassword();
                     if (users.stream().anyMatch(u -> u.getUsername().equals(username)))
-                        return new ServerResponse(ServerResponse.Type.LOGIN_FAILED);
+                        return ServerResponse.FAILED;
                     user = new User(users.size(), getRandomId(), username, password, new LocationData(), new ArrayList<>());
                     users.add(user);
-                    return ServerResponse.createLoginResultServerResponseSuccess(user);
+                    return ServerResponse.createLoginResultServerResponse(user);
                 case LOGIN:
                     username = serverRequest.getUsername();
                     password = serverRequest.getPassword();
                     Optional<User> optional = users.stream().filter(u -> u.getUsername().equals(username)).findAny();
-                    if (!optional.isPresent()) return new ServerResponse(ServerResponse.Type.LOGIN_FAILED);
+                    if (!optional.isPresent()) return ServerResponse.FAILED;
                     user = optional.get();
-                    if (!user.getPassword().equals(password))
-                        return new ServerResponse(ServerResponse.Type.LOGIN_FAILED);
-                    return ServerResponse.createLoginResultServerResponseSuccess(user);
+                    if (!user.getPassword().equals(password)) return ServerResponse.FAILED;
+                    return ServerResponse.createLoginResultServerResponse(user);
                 case ADD_FRIEND:
                     user = serverRequest.getUser();
                     newFriendUsername = serverRequest.getNewFriendUsername();
@@ -68,14 +67,11 @@ public class ServerRequestHandler {
                             break;
                         }
                     }
-                    if (!isInDatabase)
-                    {
-                        return new ServerResponse(ServerResponse.Type.ADD_FRIEND_FAILED);
-                    }
+                    if (!isInDatabase) return ServerResponse.FAILED;
                     myFriend = new Friend(newFriend);
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
-                    return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
+                    return ServerResponse.createAddFriendResultServerResponse(myFriend);
                 case ENABLE_PERMISSION:
                     user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
@@ -90,16 +86,13 @@ public class ServerRequestHandler {
                             break;
                         }
                     }
-                    if (!isInDatabase)
-                    {
-                        return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_FAILED);
-                    }
+                    if (!isInDatabase) return ServerResponse.FAILED;
                     userFriend = new Friend(user);
                     friendExist.setIHavePermission(true); // TODO: this needs to CHANGE!!
                     friendExist.setFriendHasPermission(true);
                     userFriend.setFriendHasPermission(true);
                     userFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
-                    return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_SUCCESS);
+                    return ServerResponse.SUCCESS;
                 case DISABLE_PERMISSION:
                     user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
@@ -114,39 +107,31 @@ public class ServerRequestHandler {
                             break;
                         }
                     }
-                    if (!isInDatabase)
-                    {
-                        return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_FAILED);
-                    }
+                    if (!isInDatabase) return ServerResponse.FAILED;
                     userFriend = new Friend(user);
                     friendExist.setIHavePermission(false); // TODO: this needs to CHANGE!!
                     friendExist.setFriendHasPermission(false);
                     userFriend.setFriendHasPermission(false);
                     userFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
-                    return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_SUCCESS);
+                    return ServerResponse.SUCCESS;
                 case GET_LOCATION:
                     friend = serverRequest.getFriend();
                     isInDatabase = false;
                     friendExist = null;
-                    for(User eachFriend : users)
-                    {
-                        if(eachFriend.getUsername().equals(friend.getUsername()))
-                        {
+                    for(User eachFriend : users) {
+                        if(eachFriend.getUsername().equals(friend.getUsername())) {
                             isInDatabase = true;
                             friendExist = new Friend(eachFriend);
                             break;
                         }
                     }
-                    if (!isInDatabase) {
-                        return new ServerResponse(ServerResponse.Type.GET_LOCATION_FAILED);
-                    }
-                    if(!friendExist.iHavePermission())
-                        return new ServerResponse((ServerResponse.Type.GET_LOCATION_FAILED));
-                    return ServerResponse.createGetLocationServerResponseSuccess(friendExist.getLastLocationData());
+                    if (!isInDatabase) return ServerResponse.FAILED;
+                    if(!friendExist.iHavePermission()) return ServerResponse.FAILED;
+                    return ServerResponse.createGetLocationResultServerResponse(friendExist.getLastLocationData());
                 case UPDATE_LOCATION:
                     user = serverRequest.getUser();
                     user.setLastLocationData(serverRequest.getLocationData());
-                    return new ServerResponse(ServerResponse.Type.UPDATE_LOCATION_SUCCESS);
+                    return ServerResponse.SUCCESS;
 
                 default:
                     throw new UnsupportedOperationException();
