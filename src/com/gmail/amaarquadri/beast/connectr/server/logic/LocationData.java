@@ -31,7 +31,7 @@ public class LocationData implements Serializable {
         return longitude;
     }
 
-    public double getLastUpdateUnixTime() {
+    public long getLastUpdateUnixTime() {
         return lastUpdateUnixTime;
     }
 }
