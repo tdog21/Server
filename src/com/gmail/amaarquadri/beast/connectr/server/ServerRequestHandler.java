@@ -30,7 +30,11 @@ public class ServerRequestHandler {
         String password;
         String newFriendUsername;
         User user;
+        Friend userFriend;
         User friend;
+        Friend myFriend;
+        User friendExist;
+        boolean isInDatabase;
         synchronized (users) {
             switch (serverRequest.getType()) {
                 case CREATE_ACCOUNT:
@@ -53,7 +57,7 @@ public class ServerRequestHandler {
                 case ADD_FRIEND:
                     user = serverRequest.getUser();
                     newFriendUsername = serverRequest.getNewFriendUsername();
-                    boolean isInDatabase = false;
+                    isInDatabase = false;
                     User newFriend = null;
                     for(User eachFriend : users)
                     {
@@ -68,31 +72,60 @@ public class ServerRequestHandler {
                     {
                         return new ServerResponse(ServerResponse.Type.ADD_FRIEND_FAILED);
                     }
-                    Friend myFriend = new Friend(newFriend);
+                    myFriend = new Friend(newFriend);
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
                     return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
                 case ENABLE_PERMISSION:
                     user = serverRequest.getUser();
                     friend = serverRequest.getFriend();
-                    boolean isInDatabase2 = false;
-                    User friendExist = null;
+                    isInDatabase = false;
+                    friendExist = null;
                     for(User eachFriend : users)
                     {
-                        if(eachFriend.getUsername().equals(friend))
+                        if(eachFriend.getUsername().equals(friend.getUsername()))
                         {
-                            isInDatabase2 = true;
+                            isInDatabase = true;
                             friendExist = eachFriend;
                             break;
                         }
                     }
-                    if (!isInDatabase2)
+                    if (!isInDatabase)
                     {
                         return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_FAILED);
                     }
-                    Friend myFriend2 = new Friend(friendExist);
-                    Friend userFriend = new Friend(user);
-
+                    myFriend = new Friend(friendExist);
+                    userFriend = new Friend(user);
+                    myFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
+                    myFriend.setFriendHasPermission(true);
+                    userFriend.setFriendHasPermission(true);
+                    userFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
+                    return new ServerResponse(ServerResponse.Type.ENABLE_PERMISSION_SUCCESS);
+                case DISABLE_PERMISSION:
+                    user = serverRequest.getUser();
+                    friend = serverRequest.getFriend();
+                    isInDatabase = false;
+                    friendExist = null;
+                    for(User eachFriend : users)
+                    {
+                        if(eachFriend.getUsername().equals(friend.getUsername()))
+                        {
+                            isInDatabase = true;
+                            friendExist = eachFriend;
+                            break;
+                        }
+                    }
+                    if (!isInDatabase)
+                    {
+                        return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_FAILED);
+                    }
+                    myFriend = new Friend(friendExist);
+                    userFriend = new Friend(user);
+                    myFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
+                    myFriend.setFriendHasPermission(false);
+                    userFriend.setFriendHasPermission(false);
+                    userFriend.setIHavePermission(false); // TODO: this needs to CHANGE!!
+                    return new ServerResponse(ServerResponse.Type.DISABLE_PERMISSION_SUCCESS);
 
                 default:
                     throw new UnsupportedOperationException();
