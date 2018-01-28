@@ -18,7 +18,7 @@ public class ServerRequestHandler {
         String password;
         String newFriendUsername;
         User user;
-        User friend
+        User friend;
         synchronized (users) {
             switch (serverRequest.getType()) {
                 case CREATE_ACCOUNT:
@@ -60,10 +60,6 @@ public class ServerRequestHandler {
                     user.getFriends().add(myFriend);
                     newFriend.getFriends().add(new Friend(user));
                     return ServerResponse.createAddFriendServerResponseSuccess(myFriend);
-
-
-
-
 
                 default:
                     throw new UnsupportedOperationException();
