@@ -8,13 +8,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 //https://stackoverflow.com/questions/134492/how-to-serialize-an-object-into-a-string
-class servertest extends JPanel implements ActionListener {
+class serverTest{
     private static BufferedReader in;
     private static PrintWriter out;
     private static ServerSocket server;
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(servertest::makeandshowGUI);
         listenSocket();
     }
 
@@ -34,8 +33,6 @@ class servertest extends JPanel implements ActionListener {
             System.exit(-1);
         }
 
-
-        //listenSocketBufferedReaderclientPrintWriter
         try {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
@@ -45,28 +42,7 @@ class servertest extends JPanel implements ActionListener {
         }
     }
 
-
-    protected JButton b1;
-    public servertest() {
-        b1 = new JButton("Send Text");
-        b1.setHorizontalTextPosition(AbstractButton.CENTER);
-        b1.addActionListener(this);
-        add(b1);
-    }
-
-    private static void makeandshowGUI() {
-        JFrame frame = new JFrame("Server");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        servertest newContentPane = new servertest();
-        newContentPane.setOpaque(true);
-        frame.setContentPane(newContentPane);
-
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-
-    public void actionPerformed(ActionEvent e) {
+    public void dothething() {
 
         String line;
         while (true) {
