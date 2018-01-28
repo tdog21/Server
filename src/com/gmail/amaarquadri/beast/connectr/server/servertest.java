@@ -47,18 +47,12 @@ class servertest extends JPanel implements ActionListener {
 
 
     protected JButton b1;
-
     public servertest() {
         b1 = new JButton("Send Text");
         b1.setHorizontalTextPosition(AbstractButton.CENTER);
         b1.addActionListener(this);
-
         add(b1);
-        textField.setColumns(20);
-        add(textField);
     }
-
-    JTextField textField = new JTextField("");
 
     private static void makeandshowGUI() {
         JFrame frame = new JFrame("Server");
@@ -80,7 +74,6 @@ class servertest extends JPanel implements ActionListener {
                 line = in.readLine();
 //Send data back to client
                 out.println(line);
-                textField.setText(line);
                 server.close();
                 break;
             } catch (IOException g) {
