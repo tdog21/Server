@@ -13,11 +13,13 @@ public class Server {
         throw new InternalError("Server cannot be instantiated.");
     }
 
+    private static boolean stop = false;
     private static BufferedReader in;
     private static PrintWriter out;
     private static ServerSocket server;
 
     public static void startServer() throws IOException, ClassNotFoundException {
+        if (stop) return;
         setupServer();
         try {
             out.println(serializeServerResponse(ServerRequestHandler.handle(deserializeServerRequest(in.readLine()))));
@@ -29,6 +31,10 @@ public class Server {
         catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("Read Failed", e);
         }
+    }
+
+    public static void stop() {
+        stop = true;
     }
 
     private static void setupServer() throws IOException {
