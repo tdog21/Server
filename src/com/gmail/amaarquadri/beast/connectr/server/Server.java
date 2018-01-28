@@ -6,7 +6,6 @@ import com.gmail.amaarquadri.beast.connectr.server.logic.ServerResponse;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Base64;
 
 public class Server {
     private Server() {
@@ -62,20 +61,20 @@ public class Server {
         } catch (IOException e) {
             throw new IOException("Read failed", e);
         }
+        System.out.println("Server setup finished");
     }
 
     private static ServerRequest deserializeServerRequest(String serverRequest) throws IOException, ClassNotFoundException {
-        ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(serverRequest)));
-        ServerRequest request  = (ServerRequest) inputStream.readObject();
-        inputStream.close();
-        return request;
+        try (ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(serverRequest.getBytes()))) {
+            return (ServerRequest) inputStream.readObject();
+        }
     }
 
     private static String serializeServerResponse(ServerResponse serverResponse) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(serverResponse);
-        objectOutputStream.close();
-        return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+        ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+        outputStream.writeObject(serverResponse);
+        outputStream.close();
+        return byteArrayOutputStream.toString();
     }
 }
