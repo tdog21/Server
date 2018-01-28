@@ -17,34 +17,36 @@ public class DatabaseManager {
 
     public static void startDatabaseWriter() {
         new Thread(() -> {
-            System.out.println("datbaseWriter start");
-            if (stop) return;
-            try {
-                Thread.sleep(120000); //sleeps 2 minutes
-            } catch (InterruptedException ignore) {}
-
-            synchronized (ServerRequestHandler.users) {
+            System.out.println("Starting database writer");
+            while (true) {
+                if (stop) return;
                 try {
-                    writeToFile(ServerRequestHandler.users);
-                } catch (IOException e) {
-                    //TODO: handle
+                    Thread.sleep(120000); //sleeps 2 minutes
+                } catch (InterruptedException ignore) {}
+
+                synchronized (ServerRequestHandler.users) {
+                    try {
+                        writeToFile(ServerRequestHandler.users);
+                    } catch (IOException ignore) {}
                 }
             }
         }).start();
     }
 
     public static void stop() {
+        System.out.println("Stopping database writer");
         stop = true;
     }
 
     public static void writeToFile(ArrayList<User> users) throws IOException {
-        System.out.println("Writing");
+        System.out.println("Writing to database");
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("database.ser"))) {
             outputStream.writeObject(users);
         }
     }
 
     public static ArrayList<User> readFromFile() throws IOException, ClassNotFoundException {
+        System.out.println("Reading from database");
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("database.ser"))) {
             return (ArrayList<User>) inputStream.readObject();
         }

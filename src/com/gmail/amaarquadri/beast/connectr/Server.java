@@ -16,44 +16,41 @@ public class Server {
     private static boolean stop = false;
     private static ObjectInputStream in;
     private static ObjectOutputStream out;
-    private static ServerSocket server;
 
     public static void startServer() throws IOException, ClassNotFoundException {
+        System.out.println("Starting server");
         if (stop) return;
         setupServer();
         while (true) out.writeObject(ServerRequestHandler.handle((ServerRequest) in.readObject()));
-        /*System.out.println("server responded");
-        server.close();
-        in.close();
-        out.close();
-        System.out.println("server closed");
-        startServer();*/
     }
 
     public static void stop() {
+        System.out.println("Stopping server ");
         stop = true;
     }
 
     private static void setupServer() throws IOException {
+        System.out.println("Setting up Server");
+        ServerSocket server;
         try {
-            server = new ServerSocket(4321);
             System.out.println("serverSocket active");
+            server = new ServerSocket(4555);
         } catch (IOException e) {
             throw new IOException("Could not listen on port 4321", e);
         }
 
         Socket client;
         try {
-            client = server.accept();
             System.out.println("looking for requests");
+            client = server.accept();
         } catch (IOException e) {
             throw new IOException("Accept failed: 4321", e);
         }
 
         try {
+            System.out.println("Initializing I/O");
             in = new ObjectInputStream(client.getInputStream());
             out = new ObjectOutputStream(client.getOutputStream());
-            System.out.println("I/O initialized");
         } catch (IOException e) {
             throw new IOException("Read failed", e);
         }

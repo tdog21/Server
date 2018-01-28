@@ -20,14 +20,13 @@ public class Main {
                 try {
                     DatabaseManager.writeToFile(ServerRequestHandler.users);
                 } catch (IOException e1) {
+                    System.out.println("Could not save database");
                     e1.printStackTrace();
                 }
             }
         });
         frame.setVisible(true);
         DatabaseManager.startDatabaseWriter();
-        System.out.println("Database initialized");
         Server.startServer();
-        System.out.println("Server Initalized");
     }
 }
