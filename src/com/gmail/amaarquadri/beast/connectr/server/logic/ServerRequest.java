@@ -8,19 +8,21 @@ import java.io.Serializable;
 
 public class ServerRequest implements Serializable {
     public enum Type {
-        CREATE_ACCOUNT, LOGIN, ADD_FRIEND, ENABLE_PERMISSION;
+        CREATE_ACCOUNT, LOGIN, ADD_FRIEND, ENABLE_PERMISSION, DISABLE_PERMISSION;
     }
 
     private final Type type;
     private final User user;
+    private final Friend friend;
     private final String username;
     private final String password;
     private final String newFriendUsername;
 
-    private ServerRequest(Type type, User user, String s1, String s2) {
+    private ServerRequest(Type type, User user, Friend friend, String s1, String s2) {
         if (type == Type.CREATE_ACCOUNT) {
             this.type = Type.CREATE_ACCOUNT;
             this.user = null;
+            this.friend = null;
             username = s1;
             password = s2;
             newFriendUsername = null;
@@ -28,6 +30,7 @@ public class ServerRequest implements Serializable {
         else if (type == Type.LOGIN) {
             this.type = Type.LOGIN;
             this.user = null;
+            this.friend = null;
             username = s1;
             password = s2;
             newFriendUsername = null;
@@ -35,9 +38,18 @@ public class ServerRequest implements Serializable {
         else if (type == Type.ADD_FRIEND) {
             this.type = Type.ADD_FRIEND;
             this.user = user;
+            friend = null;
             username = null;
             password = null;
             newFriendUsername = s1;
+        }
+        else if (type == Type.ENABLE_PERMISSION) {
+            type = Type.ENABLE_PERMISSION;
+            this.user = user;
+            this. friend = friend;
+            username = null;
+            password = null;
+            newFriendUsername = null;
         }
         else throw new UnsupportedOperationException();
     }
@@ -48,6 +60,10 @@ public class ServerRequest implements Serializable {
 
     public static ServerRequest createAddFriendServerRequest(User user, String newFriendUsername) {
         return new ServerRequest(Type.ADD_FRIEND, user, newFriendUsername, null);
+    }
+
+    public static ServerRequest createEnablePermissionServerRequest(User user, Friend friend) {
+        return new ServerRequest(Type.ENABLE_PERMISSION, )
     }
 
     public Type getType() {
