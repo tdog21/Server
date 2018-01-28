@@ -144,7 +144,8 @@ public class ServerRequestHandler {
                     {
                         return new ServerResponse(ServerResponse.Type.GET_LOCATION_FAILED);
                     }
-
+                    return ServerResponse.createGetLocationServerResponseSuccess(friendExist.getLastLocationData());
+                    
 
                 default:
                     throw new UnsupportedOperationException();
