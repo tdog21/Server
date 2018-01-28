@@ -2,9 +2,7 @@ package com.gmail.amaarquadri.beast.connectr.server;
 
 import com.gmail.amaarquadri.beast.connectr.server.logic.User;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -32,12 +30,14 @@ public class DatabaseManager {
     }
 
     private static void writeToFile(ArrayList<User> users) throws IOException {
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("database.ser"));
-        outputStream.writeObject(users);
-        outputStream.close();
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("database.ser"))) {
+            outputStream.writeObject(users);
+        }
     }
 
-    public static ArrayList<User> readFromFile() {
-
+    public static ArrayList<User> readFromFile() throws IOException, ClassNotFoundException {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("database.ser"))) {
+            return (ArrayList<User>) inputStream.readObject();
+        }
     }
 }
