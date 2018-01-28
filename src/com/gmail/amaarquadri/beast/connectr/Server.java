@@ -1,9 +1,10 @@
 package com.gmail.amaarquadri.beast.connectr;
 
 import com.gmail.amaarquadri.beast.connectr.logic.ServerRequest;
-import com.gmail.amaarquadri.beast.connectr.logic.ServerResponse;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -64,19 +65,5 @@ public class Server {
             throw new IOException("Read failed", e);
         }
         System.out.println("Server setup finished");
-    }
-
-    private static ServerRequest deserializeServerRequest(String serverRequest) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(serverRequest.getBytes()))) {
-            return (ServerRequest) inputStream.readObject();
-        }
-    }
-
-    private static String serializeServerResponse(ServerResponse serverResponse) throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
-        outputStream.writeObject(serverResponse);
-        outputStream.close();
-        return byteArrayOutputStream.toString();
     }
 }
