@@ -38,13 +38,13 @@ public class ServerRequest implements Serializable {
         else if (type == Type.ADD_FRIEND) {
             this.type = Type.ADD_FRIEND;
             this.user = user;
-            friend = null;
+            this.friend = null;
             username = null;
             password = null;
             newFriendUsername = s1;
         }
         else if (type == Type.ENABLE_PERMISSION) {
-            type = Type.ENABLE_PERMISSION;
+            this.type = Type.ENABLE_PERMISSION;
             this.user = user;
             this. friend = friend;
             username = null;
@@ -55,15 +55,19 @@ public class ServerRequest implements Serializable {
     }
 
     public static ServerRequest createLoginServerRequest(String username, String password) {
-        return new ServerRequest(Type.LOGIN, null, username, password);
+        return new ServerRequest(Type.LOGIN, null, null, username, password);
     }
 
     public static ServerRequest createAddFriendServerRequest(User user, String newFriendUsername) {
-        return new ServerRequest(Type.ADD_FRIEND, user, newFriendUsername, null);
+        return new ServerRequest(Type.ADD_FRIEND, user, null, newFriendUsername, null);
     }
 
     public static ServerRequest createEnablePermissionServerRequest(User user, Friend friend) {
-        return new ServerRequest(Type.ENABLE_PERMISSION, )
+        return new ServerRequest(Type.ENABLE_PERMISSION, user, friend, null, null);
+    }
+
+    public static ServerRequest createDisablePermissionServerRequest(User user, Friend friend) {
+        return new ServerRequest(Type.DISABLE_PERMISSION, user, friend, null, null);
     }
 
     public Type getType() {
@@ -76,6 +80,10 @@ public class ServerRequest implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public Friend getFriend() {
+        return friend;
     }
 
     public String getPassword() {
