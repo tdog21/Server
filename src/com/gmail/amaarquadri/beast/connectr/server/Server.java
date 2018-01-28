@@ -9,6 +9,10 @@ import java.net.Socket;
 import java.util.Base64;
 
 public class Server {
+    private Server() {
+        throw new InternalError("Server cannot be instantiated.");
+    }
+
     private static BufferedReader in;
     private static PrintWriter out;
     private static ServerSocket server;
