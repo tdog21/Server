@@ -30,8 +30,8 @@ public class ServerRequestHandler {
             if (serverRequest.getType() == ServerRequest.Type.CREATE_ACCOUNT) {
                 String username = serverRequest.getUsername();
                 String password = serverRequest.getPassword();
-                if (users.stream().anyMatch(u -> u.getUsername().equals(username)))
-                    return ServerResponse.FAILED;
+                if (users.stream().anyMatch(u -> u.getUsername().equals(username))) return ServerResponse.FAILED;
+
                 User user = new User(users.size(), getRandomId(), username, password, new LocationData(), new ArrayList<>());
                 users.add(user);
                 return ServerResponse.createLoginResultServerResponse(user);
@@ -39,36 +39,45 @@ public class ServerRequestHandler {
             else if (serverRequest.getType() == ServerRequest.Type.LOGIN) {
                 String username = serverRequest.getUsername();
                 String password = serverRequest.getPassword();
+
                 Optional<User> optional = users.stream().filter(u -> u.getUsername().equals(username)).findAny();
                 if (!optional.isPresent()) return ServerResponse.FAILED;
+
                 User user = optional.get();
                 if (!user.getPassword().equals(password)) return ServerResponse.FAILED;
                 return ServerResponse.createLoginResultServerResponse(user);
             }
             else if (serverRequest.getType() == ServerRequest.Type.ADD_FRIEND) {
-                User user = serverRequest.getUser();
-                String newFriendUsername = serverRequest.getNewFriendUsername();
-                Optional<User> optional = users.stream().filter(u -> u.getUsername().equals(newFriendUsername)).findAny();
-                if (!optional.isPresent()) return ServerResponse.FAILED;
-                Friend newFriend = new Friend(optional.get());
-                user.getFriends().add(newFriend);
-                newFriend.getFriends().add(new Friend(user));
-                return ServerResponse.createAddFriendResultServerResponse(newFriend);
+                String username = serverRequest.getUsername();
+                String newFriendUsername = serverRequest.getFriendUsername();
+
+                Optional<User> optionalUser = users.stream().filter(u -> u.getUsername().equals(username)).findAny();
+                if (!optionalUser.isPresent()) return ServerResponse.FAILED;
+                Optional<User> optionalFriend = users.stream().filter(u -> u.getUsername().equals(newFriendUsername)).findAny();
+                if (!optionalFriend.isPresent()) return ServerResponse.FAILED;
+
+                User user = optionalUser.get();
+                User newFriend = optionalFriend.get();
+                user.getFriends().add(new Friend(newFriend.getUsername(), newFriend.getLastLocationData())); //TODO: implement friend requests
+                newFriend.getFriends().add(new Friend(user.getUsername(), user.getLastLocationData()));
+                return ServerResponse.createAddFriendResultServerResponse(user);
             }
             else if (serverRequest.getType() == ServerRequest.Type.ENABLE_PERMISSION) {
-                User user = serverRequest.getUser();
-                Friend friend = serverRequest.getFriend();
+                String username = serverRequest.getUsername();
+                String friendUsername = serverRequest.getFriendUsername();
 
-                isInDatabase = false;
-                friendExist = null;
-                for (User eachFriend : users) {
-                    if (eachFriend.getUsername().equals(friend.getUsername())) {
-                        isInDatabase = true;
-                        friendExist = new Friend(eachFriend);
-                        break;
-                    }
-                }
-                if (!isInDatabase) return ServerResponse.FAILED;
+                Optional<User> optionalUser = users.stream().filter(u -> u.getUsername().equals(username)).findAny();
+                if (!optionalUser.isPresent()) return ServerResponse.FAILED;
+                Optional<User> optionalFriend = users.stream().filter(u -> u.getUsername().equals(friendUsername)).findAny();
+                if (!optionalFriend.isPresent()) return ServerResponse.FAILED;
+
+                User user = optionalUser.get();
+                Friend friend = new Friend(optionalFriend.get());
+
+                friend.setIHavePermission(true); //TODO: this needs to be removed
+                friend.setFriendHasPermission(true);
+
+
                 userFriend = new Friend(user);
                 friendExist.setIHavePermission(true); // TODO: this needs to CHANGE!!
                 friendExist.setFriendHasPermission(true);

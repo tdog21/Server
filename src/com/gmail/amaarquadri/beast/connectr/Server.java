@@ -25,7 +25,7 @@ public class Server {
     }
 
     public static void stop() {
-        System.out.println("Stopping server ");
+        System.out.println("Stopping server");
         stop = true;
     }
 

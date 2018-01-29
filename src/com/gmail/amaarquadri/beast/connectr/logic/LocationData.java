@@ -34,25 +34,4 @@ public class LocationData implements Serializable {
     public long getLastUpdateUnixTime() {
         return lastUpdateUnixTime;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        LocationData that = (LocationData) obj;
-        return Double.compare(that.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(that.getLongitude(), getLongitude()) == 0 &&
-                getLastUpdateUnixTime() == that.getLastUpdateUnixTime();
-    }
-
-    @Override
-    public int hashCode() {
-        long temp = Double.doubleToLongBits(getLatitude());
-        int result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getLongitude());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (int) (getLastUpdateUnixTime() ^ (getLastUpdateUnixTime() >>> 32));
-        return result;
-    }
 }
