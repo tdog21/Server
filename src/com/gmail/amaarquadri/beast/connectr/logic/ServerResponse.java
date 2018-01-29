@@ -29,8 +29,8 @@ public class ServerResponse implements Serializable {
         return new ServerResponse(Type.LOGIN_RESULT, user, null, null);
     }
 
-    public static ServerResponse createAddFriendResultServerResponse(Friend newFriend) {
-        return new ServerResponse(Type.ADD_FRIEND_RESULT, null, newFriend, null);
+    public static ServerResponse createAddFriendResultServerResponse(User user) {
+        return new ServerResponse(Type.ADD_FRIEND_RESULT, user, null, null);
     }
 
     public static ServerResponse createGetLocationResultServerResponse(LocationData locationData) {

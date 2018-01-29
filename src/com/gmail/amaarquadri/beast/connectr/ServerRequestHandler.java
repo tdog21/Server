@@ -72,7 +72,11 @@ public class ServerRequestHandler {
                 if (!optionalFriend.isPresent()) return ServerResponse.FAILED;
 
                 User user = optionalUser.get();
-                Friend friend = new Friend(optionalFriend.get());
+                ///User friend = optionalFriend.get();
+
+                Optional<Friend> friend = user.getFriends().stream().filter(f -> f.getFriendName().equals(friendUsername)).findAny();
+                if (!friend.isPresent()) return ServerResponse.FAILED;
+
 
                 friend.setIHavePermission(true); //TODO: this needs to be removed
                 friend.setFriendHasPermission(true);
