@@ -54,4 +54,28 @@ public class User implements Serializable {
     {
         this.lastLocationData = lastLocationData;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        User user = (User) obj;
+        if (getIndex() != user.getIndex() || getId() != user.getId() || !getUsername().equals(user.getUsername()) ||
+                !getPassword().equals(user.getPassword()) || !getLastLocationData().equals(user.getLastLocationData()) ||
+                getFriends().size() != user.getFriends().size()) return false;
+        for (int i = 0; i < friends.size(); i++) if (!friends.get(i).equals(user.getFriends().get(i))) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getIndex();
+        result = 31 * result + getId();
+        result = 31 * result + getUsername().hashCode();
+        result = 31 * result + getPassword().hashCode();
+        result = 31 * result + getLastLocationData().hashCode();
+        result = 31 * result + getFriends().hashCode();
+        return result;
+    }
 }

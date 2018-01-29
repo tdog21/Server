@@ -1,5 +1,7 @@
 package com.gmail.amaarquadri.beast.connectr.logic;
 
+import java.util.Objects;
+
 /**
  * Created by amandamorin on 2018-01-27.
  */
@@ -39,5 +41,20 @@ public class Friend extends User {
 
     public boolean friendIsPendingPermission() {
         return friendIsPendingPermission;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Friend)) return false;
+        if (!super.equals(obj)) return false;
+        Friend friend = (Friend) obj;
+        return iHavePermission == friend.iHavePermission && friendHasPermission == friend.friendHasPermission &&
+                iAmPendingPermission == friend.iAmPendingPermission && friendIsPendingPermission == friend.friendIsPendingPermission;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iHavePermission, friendHasPermission, iAmPendingPermission, friendIsPendingPermission);
     }
 }

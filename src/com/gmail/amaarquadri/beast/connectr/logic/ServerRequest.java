@@ -11,17 +11,13 @@ public class ServerRequest implements Serializable {
     }
 
     private final Type type;
-    private final User user;
-    private final Friend friend;
     private final String username;
     private final String password;
     private final String newFriendUsername;
     private final LocationData locationData;
 
-    private ServerRequest(Type type, User user, Friend friend, String username, String password, String newFriendUsername, LocationData locationData) {
+    private ServerRequest(Type type, String username, String password, String newFriendUsername, LocationData locationData) {
         this.type = type;
-        this.user = user;
-        this.friend = friend;
         this.username = username;
         this.password = password;
         this.newFriendUsername = newFriendUsername;
@@ -29,23 +25,24 @@ public class ServerRequest implements Serializable {
     }
 
     public static ServerRequest createCreateAccountServerRequest(String username, String password) {
-        return new ServerRequest(Type.CREATE_ACCOUNT, null, null, username, password, null, null);
+        return new ServerRequest(Type.CREATE_ACCOUNT, username, password, null, null);
     }
 
     public static ServerRequest createLoginServerRequest(String username, String password) {
-        return new ServerRequest(Type.LOGIN, null, null, username, password, null, null);
+        return new ServerRequest(Type.LOGIN, username, password, null, null);
     }
 
-    public static ServerRequest createAddFriendServerRequest(User user, String newFriendUsername) {
-        return new ServerRequest(Type.ADD_FRIEND, user, null, null, null, newFriendUsername, null);
+    public static ServerRequest createAddFriendServerRequest(String username, String newFriendUsername) {
+        return new ServerRequest(Type.ADD_FRIEND, username, null, newFriendUsername, null);
     }
 
-    public static ServerRequest createEnablePermissionServerRequest(User user, Friend friend) {
-        return new ServerRequest(Type.ENABLE_PERMISSION, user, friend, null, null, null, null);
+    public static ServerRequest createEnablePermissionServerRequest(String username, String friendUsername
+    ) {
+        return new ServerRequest(Type.ENABLE_PERMISSION, username, null, friendUsername, null);
     }
 
-    public static ServerRequest createDisablePermissionServerRequest(User user, Friend friend) {
-        return new ServerRequest(Type.DISABLE_PERMISSION, user, friend, null, null, null, null);
+    public static ServerRequest createDisablePermissionServerRequest(String user, String friend) {
+        return new ServerRequest(Type.DISABLE_PERMISSION, user, null, friend , null);
     }
 
     public static ServerRequest createUpdateLocationServerRequest(User user, LocationData locationData) {
