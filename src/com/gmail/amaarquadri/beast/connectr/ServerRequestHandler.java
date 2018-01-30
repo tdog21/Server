@@ -47,7 +47,7 @@ public class ServerRequestHandler {
                 if (!user.getPassword().equals(password)) return ServerResponse.FAILED;
                 return ServerResponse.createLoginResultServerResponse(user);
             }
-            else if (serverRequest.getType() == ServerRequest.Type.ADD_FRIEND) {
+            else if (serverRequest.getType() == ServerRequest.Type.FRIEND_REQUEST) {
                 String username = serverRequest.getUsername();
                 String newFriendUsername = serverRequest.getFriendUsername();
 
