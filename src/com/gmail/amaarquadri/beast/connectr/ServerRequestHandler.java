@@ -47,7 +47,7 @@ public class ServerRequestHandler {
                 if (!user.getPassword().equals(password)) return ServerResponse.FAILED;
                 return ServerResponse.createLoginResultServerResponse(user);
             }
-            else if (serverRequest.getType() == ServerRequest.Type.FRIEND_REQUEST) {
+            else if (serverRequest.getType() == ServerRequest.Type.SEND_FRIEND_REQUEST) {
                 String username = serverRequest.getUsername();
                 String newFriendUsername = serverRequest.getFriendUsername();
 
@@ -62,7 +62,7 @@ public class ServerRequestHandler {
                 newFriend.getFriends().add(new Friend(user.getUsername(), user.getLastLocationData()));
                 return ServerResponse.createAddFriendResultServerResponse(user);
             }
-            else if (serverRequest.getType() == ServerRequest.Type.ENABLE_PERMISSION) {
+            else if (serverRequest.getType() == ServerRequest.Type.ENABLE_LOCATION_PERMISSION) {
                 String username = serverRequest.getUsername();
                 String friendUsername = serverRequest.getFriendUsername();
 
@@ -89,7 +89,7 @@ public class ServerRequestHandler {
                 userFriend.setIHavePermission(true); // TODO: this needs to CHANGE!!
                 return ServerResponse.SUCCESS;
             }
-            else if (serverRequest.getType() == ServerRequest.Type.DISABLE_PERMISSION) {
+            else if (serverRequest.getType() == ServerRequest.Type.REVOKE_LOCATION_PERMISSION) {
                 user = serverRequest.getUser();
                 friend = serverRequest.getFriend();
                 isInDatabase = false;

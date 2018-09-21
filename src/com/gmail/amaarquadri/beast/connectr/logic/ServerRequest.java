@@ -7,7 +7,9 @@ import java.io.Serializable;
  */
 public class ServerRequest implements Serializable {
     public enum Type {
-        CREATE_ACCOUNT, LOGIN, FRIEND_REQUEST, ENABLE_PERMISSION, DISABLE_PERMISSION, UPDATE_LOCATION, GET_LOCATION
+        CREATE_ACCOUNT, LOGIN, SEND_FRIEND_REQUEST, ACCEPT_FRIEND_REQUEST,
+        REQUEST_LOCATION_PERMISSION, GRANT_LOCATION_PERMISSION, REVOKE_LOCATION_PERMISSION,
+        UPDATE_LOCATION, GET_LOCATION
     }
 
     private final Type type;
@@ -33,15 +35,15 @@ public class ServerRequest implements Serializable {
     }
 
     public static ServerRequest createFriendRequestServerRequest(String username, String friendUsername) {
-        return new ServerRequest(Type.FRIEND_REQUEST, username, null, friendUsername, null);
+        return new ServerRequest(Type.SEND_FRIEND_REQUEST, username, null, friendUsername, null);
     }
 
     public static ServerRequest createEnablePermissionServerRequest(String username, String friendUsername) {
-        return new ServerRequest(Type.ENABLE_PERMISSION, username, null, friendUsername, null);
+        return new ServerRequest(Type.GRANT_LOCATION_PERMISSION, username, null, friendUsername, null);
     }
 
     public static ServerRequest createDisablePermissionServerRequest(String user, String friend) {
-        return new ServerRequest(Type.DISABLE_PERMISSION, user, null, friend, null);
+        return new ServerRequest(Type.REVOKE_LOCATION_PERMISSION, user, null, friend, null);
     }
 
     public static ServerRequest createUpdateLocationServerRequest(String username, LocationData locationData) {
